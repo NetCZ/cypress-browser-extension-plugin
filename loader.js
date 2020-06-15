@@ -150,18 +150,20 @@ function onBeforeBrowserLaunch(browser = {}, args) {
     const toLoad = definitions.filter(opts => (
       !opts.validBrowsers || opts.validBrowsers.includes(browser.name)
     ));
-    if (toLoad.length > 0) {
-      const dirList = toLoad.map(o => o.destDir).join(',');
-      const existingLoadArgIndex = args.findIndex(arg => (
-        (typeof arg === 'string') && arg.startsWith('--load-extension=')
-      ));
-      if (existingLoadArgIndex >= 0) {
-        // eslint-disable-next-line no-param-reassign
-        args[existingLoadArgIndex] = `${args[existingLoadArgIndex]},${dirList}`;
-      } else {
-        args.push(`--load-extension=${dirList}`);
-      }
-    }
+    const dirList = toLoad.map(o => o.destDir).join(',');
+    args.extensions.push(dirList);
+    // if (toLoad.length > 0) {
+    //   const dirList = toLoad.map(o => o.destDir).join(',');
+    //   const existingLoadArgIndex = args.findIndex(arg => (
+    //     (typeof arg === 'string') && arg.startsWith('--load-extension=')
+    //   ));
+    //   if (existingLoadArgIndex >= 0) {
+    //     // eslint-disable-next-line no-param-reassign
+    //     args[existingLoadArgIndex] = `${args[existingLoadArgIndex]},${dirList}`;
+    //   } else {
+    //     args.push(`--load-extension=${dirList}`);
+    //   }
+    // }
     return args;
   });
 }
